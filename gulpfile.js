@@ -1,10 +1,12 @@
-const gulp = require('gulp'),
-      autoprefixer = require('gulp-autoprefixer'),
-      concat = require('gulp-concat'),
-      sass = require('gulp-sass'),
-      sourcemaps = require('gulp-sourcemaps'),
-      plumber = require('gulp-plumber'),
-      browserSync = require('browser-sync').create();
+var gulp = require('gulp');
+var autoprefixer = require('gulp-autoprefixer');
+var concat = require('gulp-concat');
+var sass = require('gulp-sass');
+var sourcemaps = require('gulp-sourcemaps');
+var plumber = require('gulp-plumber');
+var gutil = require('gulp-util');
+var notify = require('gulp-notify');
+var browserSync = require('browser-sync').create();
 
 var config = {
   path: {
@@ -22,7 +24,11 @@ gulp.task('scss', function() {
   return gulp.src(config.path.styles)
     .pipe(sourcemaps.init())
     .pipe(plumber())
-    .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
+    .pipe(sass({ errLogToConsole: false, outputStyle: 'compressed'}))
+    .on('error', function(err) {
+        notify().write(err);
+        this.emit('end');
+    })
     .pipe(concat(config.output.cssFile))
     .pipe(autoprefixer('last 2 versions'))
     .pipe(sourcemaps.write())
@@ -42,3 +48,8 @@ gulp.task('serve', function() {
 });
 
 gulp.task('default', ['scss', 'serve']);
+
+
+// todo
+// 1. csslinter
+// 2. can i use

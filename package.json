@@ -16,5 +16,9 @@
     "gulp-plumber": "^1.1.0",
     "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^2.6.1"
+  },
+  "dependencies": {
+    "gulp-notify": "^3.0.0",
+    "gulp-util": "^3.0.8"
   }
 }
