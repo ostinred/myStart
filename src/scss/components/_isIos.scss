@@ -1,0 +1,25 @@
+$classname: main;
+
+.isIos {
+  .#{$classname} {
+    @include iphone-sm {
+      height: calc(100vh - 70px);
+    }
+
+    @include iphone-md {
+      height: calc(100vh - 75px);
+    }
+
+    @include iphone-lg {
+      height: calc(100vh - 72px);
+    }
+
+    @include ipad {
+      height: calc(100vh - 50px);
+    }
+
+    @include landscape {
+      height: auto;
+    }
+  }
+}

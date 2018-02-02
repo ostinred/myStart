@@ -4,19 +4,30 @@ var concat = require('gulp-concat');
 var sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
 var plumber = require('gulp-plumber');
-var gutil = require('gulp-util');
+var jsmin = require("gulp-uglify");
 var notify = require('gulp-notify');
 var browserSync = require('browser-sync').create();
+var imagemin = require('gulp-imagemin');
+var pngquant = require('imagemin-pngquant');
+var jpegtran = require('imagemin-jpegtran');
+var gifsicle = require('imagemin-gifsicle');
+var imageminSvgo = require('imagemin-svgo');
 
 var config = {
   path: {
-    styles: './src/styles/**/*.scss',
-    html: './index.html'
+    styles: './src/scss/**/*.scss',
+    html: './src/index.html',
+    img: './src/img/**/*',
+    js: './src/js/**/*.js',
+    homeDir: './'
   },
   output: {
+    html: './dest/',
     cssFile: 'app.min.css',
     cssPath: './dest/css/',
-    homeDir: './'
+    homeDir: './dest/',
+    img: './dest/img',
+    jsDest: './dest/js'
   }
 };
 
@@ -39,17 +50,45 @@ gulp.task('scss', function() {
 gulp.task('serve', function() {
   browserSync.init({
     server: {
-      baseDir: config.output.homeDir
+      baseDir: config.output.html
     }
   });
 
   gulp.watch(config.path.styles, ['scss']);
+  gulp.watch(config.path.js, ['jsMin']);
+  gulp.watch(config.path.html, ['copyHTML']);
   gulp.watch(config.path.html).on('change', browserSync.reload);
 });
 
-gulp.task('default', ['scss', 'serve']);
+gulp.task('copyHTML', function () {
+  gulp.src(config.path.html)
+    .pipe(gulp.dest(config.output.html));
+});
 
+gulp.task("imageMin", function(){
+  return gulp.src(config.path.img)
+    .pipe(imagemin(
+      [
+        pngquant(),
+        jpegtran(),
+        gifsicle(),
+        imageminSvgo({
+          plugins: [
+            {removeViewBox: false},
+            {cleanupIDs: false}
+          ]
+        })
+      ],
+      {verbose: true}
+    ))
 
-// todo
-// 1. csslinter
-// 2. can i use
+    .pipe(gulp.dest(config.output.img));
+});
+
+gulp.task("jsMin", function() {
+  return gulp.src(config.path.js)
+    .pipe(jsmin())
+    .pipe(gulp.dest(config.output.jsDest))
+});
+
+gulp.task('default', ['copyHTML', 'scss', 'jsMin', 'serve']);
