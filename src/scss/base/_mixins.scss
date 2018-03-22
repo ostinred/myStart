@@ -443,3 +443,10 @@ $a-transition-long: .5s;
     @content;
   }
 }
+
+//Retina display
+@mixin retina {
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+      @content;
+  }
+}
