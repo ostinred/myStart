@@ -1,3 +1,114 @@
+// variables
+$mobile:        320px !default;
+$tablet:        767px !default;
+$laptop:        1170px !default;
+$desktop:       1400px !default;
+$desktop-hd:    1900px !default;
+$desktop-2k:    2400px !default;
+
+@mixin mobile {
+  @media screen and (min-width: #{$mobile}) {
+    @content;
+  }
+}
+
+// min-width small screen / tablets
+@mixin tablet {
+  @media screen and (min-width: #{$tablet}) {
+    @content;
+  }
+}
+
+// max-width small screen / tablets
+@mixin tablet-max {
+  @media screen and  (max-width: #{$laptop - 1}) {
+    @content;
+  }
+}
+
+// max-width large screen / wide desktop
+@mixin laptop {
+  @media screen and (min-width: #{$laptop}) {
+    @content;
+  }
+}
+
+// min-width large screen / wide desktop
+@mixin desktop {
+  @media screen and (min-width: #{$desktop}) {
+    @content;
+  }
+}
+
+// min-width large screen / wide desktop
+@mixin desktop-hd {
+  @media screen and (min-width: #{$desktop-hd}) {
+    @content;
+  }
+}
+
+// min-width xlarge screen
+@mixin desktop-2k {
+  @media screen and (min-width: #{$desktop-2k}) {
+    @content;
+  }
+}
+
+// iphone 3, 3gs, 4, 4s
+@mixin iphone-xs{
+  @media screen and (device-aspect-ratio: 2/3) {
+    @content;
+  }
+}
+// iPhone 5, 5s, SE
+@mixin iphone-sm{
+  @media screen and (device-aspect-ratio: 40/71) {
+    @content;
+  }
+}
+
+// iPhone 6, 6s, 7, 8
+@mixin iphone-md{
+  @media screen and (device-aspect-ratio: 375/667) {
+    @content;
+  }
+}
+
+// iPhone 6+, 7+, 8+
+@mixin iphone-lg{
+  @media only screen and (min-device-width : 414px) and (max-device-width : 736px) and (-webkit-min-device-pixel-ratio : 3) and (-webkit-device-pixel-ratio : 3) {
+    @content;
+  }
+}
+
+// iPhone X
+@mixin iphone-x {
+  @media only screen and (device-width : 375px) and (device-height : 812px) and (-webkit-device-pixel-ratio : 3) {
+    @content;
+  }
+}
+
+// iPad
+@mixin ipad {
+  @media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) {
+    @content;
+  }
+}
+
+// iPadlandscape
+@mixin ipad-landscape {
+  @media only screen and (min-device-width : 768px) and (max-device-width : 1024px)  and (orientation: landscape) {
+    @content;
+  }
+}
+
+// Retina display
+@mixin retina {
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    @content;
+  }
+}
+
 @function contains($list, $values...) {
   @each $value in $values {
     @if type-of(index($list, $value)) != "number" {
@@ -20,7 +131,6 @@
   }
 }
 
-
 @function is-length($value) {
   @return type-of($value) != "null" and (str-slice($value + "", 1, 4) == "calc"
        or index(auto inherit initial 0, $value)
@@ -31,132 +141,46 @@
   @return is-length($value)
           or contains("fill" "fit-content" "min-content" "max-content", $value);
 }
+
 @mixin absolute($sides: null null null null) {
   position: absolute;
+
   $exact-size: (
           top: nth($sides, 1),
           right: nth($sides, 2),
           bottom: nth($sides, 3),
           left: nth($sides, 4)
   );
+
   @each $side, $value in $exact-size {
     @if is-length($value) {
       #{$side}: $value;
     }
   }
 }
+// @include absolute(0 null null 0);
 
-
-@mixin absolute-tl($top:0, $left:0) {
-  position: absolute;
-  top: $top;
-  left: $left;
+@mixin size-reset {
+  margin: 0;
+  padding: 0;
 }
+// @include size-reset;
 
-@mixin absolute-br($bottom:0, $right:0) {
-  position: absolute;
-  bottom: $bottom;
-  right: $right;
-}
-
-@mixin m($margins: null null null null) {
-  $exact-margin: (
-          margin-top: nth($margins, 1),
-          margin-right: nth($margins, 2),
-          margin-bottom: nth($margins, 3),
-          margin-left: nth($margins, 4)
-  );
-  @each $margin, $value in $exact-margin {
-    @if is-length($value) {
-      #{$margin}: $value;
-    }
-  }
-}
-@mixin p($paddings: null null null null) {
-  $exact-padding: (
-          padding-top: nth($paddings, 1),
-          padding-right: nth($paddings, 2),
-          padding-bottom: nth($paddings, 3),
-          padding-left: nth($paddings, 4)
-  );
-  @each $padding, $value in $exact-padding {
-    @if is-length($value) {
-      #{$padding}: $value;
-    }
-  }
-}
-
-@mixin size-reset($margin: 0, $padding: 0) {
-  margin: $margin;
-  padding: $padding;
-}
-
-@mixin background-center($size: cover) {
+@mixin bg-center {
   background: {
     position: 50% 50%;
-    size: $size;
+    size: cover;
     repeat: no-repeat;
   }
 }
-@mixin has-color($bg-color,$color) {
-  background-color: $bg-color;
-  color: $color;
-}
+// @include bg-center;
 
-@mixin rounded($radius: 50%) {
-  border-radius: $radius;
-}
-@mixin border($color, $width: 1px, $style: solid) {
-  border: $width $style $color;
-}
-
-@mixin center {
-  @include m(null auto);
-}
-
-@mixin absolute-center {
-  @include absolute(0 0 0 0);
-  @include m(auto);
-}
-
-@mixin middle-vertical {
-  @include absolute(50% null null null);
-  transform: translateY(-50%);
-}
-
-@mixin middle-horizontal {
-  @include absolute(null null null 50%);
-  transform: translateX(-50%);
-}
-
-@mixin middle-center {
+@mixin center-absolute {
   @include absolute(50% null null 50%);
   transform: translate(-50%, -50%);
 }
+// @include  center-absolute;
 
-@mixin cl {
-  &:after {
-    content: '';
-    display: block;
-    clear: both;
-  }
-}
-
-@mixin font-style($bold:normal, $style:normal) {
-  font: {
-    weight: $bold;
-    style: $style;
-  }
-}
-
-@mixin list-unstyled($display:block) {
-  padding-left: 0;
-  list-style: none;
-
-  li {
-    display: $display;
-  }
-}
 
 @mixin size($value) {
   $width: nth($value, 1);
@@ -178,58 +202,31 @@
     @warn "`#{$width}` is not a valid length for the `$width` parameter in the `size` mixin.";
   }
 }
+// @include size(20px 10px);
 
-
-@mixin square($size:100%) {
-  width: $size;
-  height: $size;
-}
-
-@mixin dark-overlay($opacity) {
-  position: relative;
-  z-index: 1;
-
-  &:after {
-    content: '';
-    @include size(100%);
-    @include absolute(0 0 0 0);
-    background: rgba(0, 0, 0, $opacity);
-    z-index: -1;
-  }
-}
-
-@mixin img-responsive($display: block) {
-  display: $display;
+@mixin img-responsive {
+  display: block;
   max-width: 100%;
   height: auto;
 }
+// @include img-responsive;
 
-@mixin inline($font-size) {
-  list-style-type: none;
-  font-size: 0;
 
-  li {
-    display: inline;
-    font-size: $font-size;
-  }
-}
-
-@mixin placeholder($color) {
+@mixin placeholder() {
   &::-moz-placeholder {
-    color: $color;
+    @content;
   }
   &:-ms-input-placeholder {
-    color: $color;
+    @content;
   }
   &::-webkit-input-placeholder {
-    color: $color;
+    @content;
   }
 }
+// @include placeholder {color: red;}
 
 
-$a-transition-long: .5s;
-
-@mixin placeholder-animation-opacity($class, $transition: $a-transition-long, $text-indent: 250px){
+@mixin placeholder-animation-opacity($class, $transition: .5s, $text-indent: 250px){
   .#{$class}::-webkit-input-placeholder{
     will-change: opacity;
     opacity: 1;
@@ -267,7 +264,7 @@ $a-transition-long: .5s;
     }
   }
 }
-
+// @include placeholder-animation-opacity(your classname);
 
 @mixin placeholder-animation-left($class, $transition: $a-transition-long, $text-indent: -200px){
   .#{$class}::-webkit-input-placeholder{
@@ -309,47 +306,7 @@ $a-transition-long: .5s;
     text-indent: $text-indent;
   }
 }
-
-@mixin placeholder-animation-right($class, $transition: $a-transition-long, $text-indent: 250px){
-  .#{$class}::-webkit-input-placeholder{
-    will-change: text-indent;
-    text-indent: 0;
-    transition:  text-indent $transition;
-  }
-  .#{$class}:focus::-webkit-input-placeholder{
-    text-indent: $text-indent;
-  }
-
-  .#{$class}::-moz-placeholder{
-    will-change: text-indent;
-    text-indent: 0;
-    transition:  text-indent $transition;
-  }
-
-  .#{$class}:focus::-moz-placeholder{
-    text-indent: $text-indent;
-  }
-
-  .#{$class}:-moz-placeholder{
-    will-change: text-indent;
-    text-indent: 0;
-    transition:  text-indent $transition;
-  }
-
-  .#{$class}:focus:-moz-placeholder{
-    text-indent: $text-indent;
-  }
-
-  .#{$class}:-ms-input-placeholder{
-    will-change: text-indent;
-    text-indent: 0;
-    transition:  text-indent $transition;
-  }
-
-  .#{$class}:focus:-ms-input-placeholder{
-    text-indent: $text-indent;
-  }
-}
+// @include placeholder-animation-left(input, $transition: .25s, $text-indent: -200px);
 
 @mixin scrollbar-style($width, $height, $foreground-color, $border-radius, $background-color: mix($foreground-color, white,  30%)) {
   ::-webkit-scrollbar {
@@ -372,6 +329,8 @@ $a-transition-long: .5s;
     scrollbar-track-color: $background-color;
   }
 }
+// @include scrollbar-style($width: 4px, $height: 10px, $foreground-color: red, $border-radius: 5px, $background-color: mix(red, white,  30%));
+
 
 @mixin selection-style($bg-color, $color) {
   ::selection {
@@ -379,74 +338,41 @@ $a-transition-long: .5s;
     color: $color;
   }
 }
-
-@mixin transition-transform($transition: .15s ease-in-out) {
- will-change: transform;
- transition: transform $transition;
-}
-
-@mixin transition-willChange($value, $transition: .15s ease-in-out) {
-  will-change: $value;
-  transition: $value $transition;
-}
+// @include selection-style(#fff, $000);
 
 @mixin object-fit($fit: cover) {
   object-fit: $fit;
   object-position: center;
 }
 
-@mixin landscape {
-  @media screen and (max-width: 766px) and (orientation: landscape) {
-    @content
+@mixin remove-FOUC {
+  visibility: hidden;
+
+  &.slick-initialized {
+    visibility: visible;
   }
 }
+// @include remove-FOUC;
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+//@include flex-center;
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+//@include flex-column;
 
 
-// Media queries for iPhones
-// iphone 3, 3gs, 4, 4s
-@mixin iphone-xs{
-  @media screen and (device-aspect-ratio: 2/3) {
-    @content;
-  }
+@mixin reset-btn-styles {
+  @include size-reset;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  -webkit-appearance: none;
 }
-// iPhone 5, 5s, SE
-@mixin iphone-sm{
-  @media screen and (device-aspect-ratio: 40/71) {
-    @content;
-  }
-}
-
-// iPhone 6, 6s, 7, 8
-@mixin iphone-md{
-  @media screen and (device-aspect-ratio: 375/667) {
-    @content;
-  }
-}
-
-// iPhone 6+, 7+, 8+
-@mixin iphone-lg{
-  @media only screen and (min-device-width : 414px) and (max-device-width : 736px) and (-webkit-min-device-pixel-ratio : 3) and (-webkit-device-pixel-ratio : 3) {
-    @content;
-  }
-}
-
-//iPhone X
-@mixin iphone-x {
-  @media only screen and (device-width : 375px) and (device-height : 812px) and (-webkit-device-pixel-ratio : 3) {
-    @content;
-  }
-}
-
-//IPad
-@mixin ipad {
-  @media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) {
-    @content;
-  }
-}
-
-//Retina display
-@mixin retina {
-  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-      @content;
-  }
-}
+//@include reset-btn-styles;

@@ -22,5 +22,25 @@ $font-weight-light:     300 !default;
 $line-height-normal:    1 !default;
 $line-height-computed:  1.44 !default;
 
-
 $font-family-base:		Helvetica, Arial, sans-serif;
+
+// units
+$unit:                    15px !default;
+
+// transitions
+$transition-unit:           .125s !default;
+$transition-timing:         ease-in-out !default;
+
+$transition-duration-short:  $transition-unit;
+$transition-duration-base:  $transition-unit * 2;
+$transition-duration-long:  $transition-unit * 4;
+
+$a-transition-base:       $transition-duration-base $transition-timing;
+$a-transition-short:      $transition-duration-short $transition-timing;
+$a-transition-long:       $transition-duration-long $transition-timing;
+
+
+// navigation
+
+$navigation-transition:   $a-transition-short;
+$navigation-btn-color:    $primary-color;

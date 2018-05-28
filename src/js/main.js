@@ -1,9 +1,6 @@
 $(document).ready(function(){
-  console.log('123123');
-
-
   var $body = $('body');
-  var $header = $('.header');
+  var $header = $('.is-header');
   var $navBtn = $('#navBtn');
   var isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/);
   var isChrome = /Chrome/i.test(navigator.userAgent);
@@ -12,7 +9,7 @@ $(document).ready(function(){
 
   $navBtn.click(function(){
     $header.toggleClass('is-open');
-    $body.toggleClass('fixed');
+    $body.toggleClass('is-fixed');
   });
 
   function detectBrowser(){

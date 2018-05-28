@@ -22,7 +22,7 @@ body {
   background-color: $global-color;
   -webkit-overflow-scrolling: touch;
 
-  &.fixed {
+  &.is-fixed {
     position: fixed;
     top: 0;
     left: 0;
@@ -43,6 +43,8 @@ body {
 a {
   background-color: $transparent-color;
   -webkit-text-decoration-skip: objects;
+  text-decoration: none;
+  color: $grey-base;
 
   &,
   &:hover,
@@ -69,14 +71,29 @@ img {
   border-style: none;
 
   &.object-fit {
-    @include object-fit(cover);
+    @include object-fit;
+  }
+  
+  &.ir {
+    @include img-responsive;
   }
 }
 
+a,
 button,
 html [type="button"],
 [type="reset"],
-[type="submit"] {
-  -webkit-appearance: button;
+[type="submit"],
+[role=button],
+[role=link] {
+  appearance: none;
+  -webkit-appearance: none;
   box-shadow: none;
+  outline: none !important;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }

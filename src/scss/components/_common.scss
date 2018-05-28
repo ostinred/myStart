@@ -1,0 +1,31 @@
+.is-container {
+  padding: 0 $unit;
+
+  @include tablet {
+    padding: 0 $unit * 3;
+  }
+
+  @include laptop {
+    padding: 0 $unit * 2;
+  }
+
+  @include desktop {
+    padding: 0 $unit * 2;
+  }
+}
+
+.flex__row {
+  display: flex;
+}
+
+.flex__beetwen {
+  justify-content: space-between;
+}
+
+.flex__center-vertical {
+  align-items: center;
+}
+
+.flex__center-horizontal {
+  justify-content: center;
+}
