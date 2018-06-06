@@ -14,6 +14,10 @@ $classname: main;
       height: calc(100vh - 72px);
     }
 
+    @include iphone-x {
+      height: calc(100vh - 113px);
+    }
+
     @include ipad {
       height: calc(100vh - 50px);
     }
