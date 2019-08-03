@@ -1,13 +1,19 @@
 // variables
-$mobile:        320px !default;
-$tablet:        767px !default;
-$laptop:        1170px !default;
-$desktop:       1400px !default;
-$desktop-hd:    1900px !default;
-$desktop-2k:    2400px !default;
+$mobile: 320px !default;
+$tablet: 767px !default;
+$laptop: 1170px !default;
+$desktop: 1400px !default;
+$desktop-hd: 1900px !default;
+$desktop-2k: 2400px !default;
 
 @mixin mobile {
   @media screen and (min-width: #{$mobile}) {
+    @content;
+  }
+}
+
+@mixin mobile-max {
+  @media screen and (max-width: #{$tablet - 1}) {
     @content;
   }
 }
@@ -26,6 +32,12 @@ $desktop-2k:    2400px !default;
   }
 }
 
+@mixin tablet-only {
+  @media screen and (min-width: #{$tablet}) and (max-width: #{$laptop - 1}) {
+    @content;
+  }
+}
+
 // max-width large screen / wide desktop
 @mixin laptop {
   @media screen and (min-width: #{$laptop}) {
@@ -33,9 +45,20 @@ $desktop-2k:    2400px !default;
   }
 }
 
+@mixin laptop-only {
+  @media screen and (min-width: #{$laptop}) and (max-width: #{$desktop - 1}) {
+    @content;
+  }
+}
 // min-width large screen / wide desktop
 @mixin desktop {
   @media screen and (min-width: #{$desktop}) {
+    @content;
+  }
+}
+
+@mixin desktop-only {
+  @media screen and (min-width: #{$desktop}) and (max-width: #{$desktop-hd - 1}) {
     @content;
   }
 }
@@ -55,49 +78,49 @@ $desktop-2k:    2400px !default;
 }
 
 // iphone 3, 3gs, 4, 4s
-@mixin iphone-xs{
+@mixin iphone-xs {
   @media screen and (device-aspect-ratio: 2/3) {
     @content;
   }
 }
 // iPhone 5, 5s, SE
-@mixin iphone-sm{
+@mixin iphone-sm {
   @media screen and (device-aspect-ratio: 40/71) {
     @content;
   }
 }
 
 // iPhone 6, 6s, 7, 8
-@mixin iphone-md{
+@mixin iphone-md {
   @media screen and (device-aspect-ratio: 375/667) {
     @content;
   }
 }
 
 // iPhone 6+, 7+, 8+
-@mixin iphone-lg{
-  @media only screen and (min-device-width : 414px) and (max-device-width : 736px) and (-webkit-min-device-pixel-ratio : 3) and (-webkit-device-pixel-ratio : 3) {
+@mixin iphone-lg {
+  @media only screen and (min-device-width: 414px) and (max-device-width: 736px) and (-webkit-min-device-pixel-ratio: 3) and (-webkit-device-pixel-ratio: 3) {
     @content;
   }
 }
 
 // iPhone X
 @mixin iphone-x {
-  @media only screen and (device-width : 375px) and (device-height : 812px) and (-webkit-device-pixel-ratio : 3) {
+  @media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
     @content;
   }
 }
 
 // iPad
 @mixin ipad {
-  @media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) {
+  @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) {
     @content;
   }
 }
 
 // iPadlandscape
 @mixin ipad-landscape {
-  @media only screen and (min-device-width : 768px) and (max-device-width : 1024px)  and (orientation: landscape) {
+  @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {
     @content;
   }
 }
@@ -111,7 +134,7 @@ $desktop-2k:    2400px !default;
 
 @function contains($list, $values...) {
   @each $value in $values {
-    @if type-of(index($list, $value)) != "number" {
+    @if type-of(index($list, $value)) != 'number' {
       @return false;
     }
   }
@@ -132,24 +155,21 @@ $desktop-2k:    2400px !default;
 }
 
 @function is-length($value) {
-  @return type-of($value) != "null" and (str-slice($value + "", 1, 4) == "calc"
-       or index(auto inherit initial 0, $value)
-       or (type-of($value) == "number" and not(unitless($value))));
+  @return type-of($value) != 'null' and (str-slice($value + '', 1, 4) == 'calc' or index(auto inherit initial 0, $value) or (type-of($value) == 'number' and not(unitless($value))));
 }
 
 @function is-size($value) {
-  @return is-length($value)
-          or contains("fill" "fit-content" "min-content" "max-content", $value);
+  @return is-length($value) or contains('fill' 'fit-content' 'min-content' 'max-content', $value);
 }
 
 @mixin absolute($sides: null null null null) {
   position: absolute;
 
   $exact-size: (
-          top: nth($sides, 1),
-          right: nth($sides, 2),
-          bottom: nth($sides, 3),
-          left: nth($sides, 4)
+    top: nth($sides, 1),
+    right: nth($sides, 2),
+    bottom: nth($sides, 3),
+    left: nth($sides, 4),
   );
 
   @each $side, $value in $exact-size {
@@ -181,7 +201,6 @@ $desktop-2k:    2400px !default;
 }
 // @include  center-absolute;
 
-
 @mixin size($value) {
   $width: nth($value, 1);
   $height: $width;
@@ -211,7 +230,6 @@ $desktop-2k:    2400px !default;
 }
 // @include img-responsive;
 
-
 @mixin placeholder() {
   &::-moz-placeholder {
     @content;
@@ -225,90 +243,89 @@ $desktop-2k:    2400px !default;
 }
 // @include placeholder {color: red;}
 
-
-@mixin placeholder-animation-opacity($class, $transition: .5s, $text-indent: 250px){
-  .#{$class}::-webkit-input-placeholder{
+@mixin placeholder-animation-opacity($class, $transition: 0.5s, $text-indent: 250px) {
+  .#{$class}::-webkit-input-placeholder {
     will-change: opacity;
     opacity: 1;
     transition: opacity $transition;
   }
-  .#{$class}:focus::-webkit-input-placeholder{
+  .#{$class}:focus::-webkit-input-placeholder {
     opacity: 0;
   }
 
-  .#{$class}::-moz-placeholder{
+  .#{$class}::-moz-placeholder {
     will-change: opacity;
     opacity: 1;
     transition: opacity $transition;
 
-    &:focus{
+    &:focus {
       opacity: 0;
     }
   }
-  .#{$class}:-moz-placeholder{
+  .#{$class}:-moz-placeholder {
     will-change: opacity;
     opacity: 1;
     transition: opacity $transition;
 
-    &:focus{
+    &:focus {
       opacity: 0;
     }
   }
-  .#{$class}:-ms-input-placeholder{
+  .#{$class}:-ms-input-placeholder {
     will-change: opacity;
     opacity: 1;
     transition: opacity $transition;
 
-    &:focus{
+    &:focus {
       opacity: 0;
     }
   }
 }
 // @include placeholder-animation-opacity(your classname);
 
-@mixin placeholder-animation-left($class, $transition: $a-transition-long, $text-indent: -200px){
-  .#{$class}::-webkit-input-placeholder{
+@mixin placeholder-animation-left($class, $transition: $a-transition-long, $text-indent: -200px) {
+  .#{$class}::-webkit-input-placeholder {
     will-change: text-indent;
     text-indent: 0;
-    transition:  text-indent $transition;
+    transition: text-indent $transition;
   }
-  .#{$class}:focus::-webkit-input-placeholder{
+  .#{$class}:focus::-webkit-input-placeholder {
     text-indent: $text-indent;
   }
 
-  .#{$class}::-moz-placeholder{
+  .#{$class}::-moz-placeholder {
     will-change: text-indent;
     text-indent: 0;
-    transition:  text-indent $transition;
+    transition: text-indent $transition;
   }
 
-  .#{$class}:focus::-moz-placeholder{
+  .#{$class}:focus::-moz-placeholder {
     text-indent: $text-indent;
   }
 
-  .#{$class}:-moz-placeholder{
+  .#{$class}:-moz-placeholder {
     will-change: text-indent;
     text-indent: 0;
-    transition:  text-indent $transition;
+    transition: text-indent $transition;
   }
 
-  .#{$class}:focus:-moz-placeholder{
+  .#{$class}:focus:-moz-placeholder {
     text-indent: $text-indent;
   }
 
-  .#{$class}:-ms-input-placeholder{
+  .#{$class}:-ms-input-placeholder {
     will-change: text-indent;
     text-indent: 0;
-    transition:  text-indent $transition;
+    transition: text-indent $transition;
   }
 
-  .#{$class}:focus:-ms-input-placeholder{
+  .#{$class}:focus:-ms-input-placeholder {
     text-indent: $text-indent;
   }
 }
 // @include placeholder-animation-left(input, $transition: .25s, $text-indent: -200px);
 
-@mixin scrollbar-style($width, $height, $foreground-color, $border-radius, $background-color: mix($foreground-color, white,  30%)) {
+@mixin scrollbar-style($width, $height, $foreground-color, $border-radius, $background-color: mix($foreground-color, white, 30%)) {
   ::-webkit-scrollbar {
     width: $width;
     height: $height;
@@ -330,7 +347,6 @@ $desktop-2k:    2400px !default;
   }
 }
 // @include scrollbar-style($width: 4px, $height: 10px, $foreground-color: red, $border-radius: 5px, $background-color: mix(red, white,  30%));
-
 
 @mixin selection-style($bg-color, $color) {
   ::selection {
@@ -366,7 +382,6 @@ $desktop-2k:    2400px !default;
   flex-direction: column;
 }
 //@include flex-column;
-
 
 @mixin reset-btn-styles {
   @include size-reset;

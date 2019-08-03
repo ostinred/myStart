@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).ready(function() {
   var $body = $('body');
   var $header = $('.is-header');
   var $navBtn = $('#navBtn');
@@ -7,15 +7,15 @@ $(document).ready(function(){
   var mq = $(window).width() < 1023;
   var $main = $('.main');
 
-  $navBtn.click(function(){
+  $navBtn.click(function() {
     $header.toggleClass('is-open');
     $body.toggleClass('is-fixed');
   });
 
-  function detectBrowser(){
+  function detectBrowser() {
     if (isSafari) {
       $body.addClass('isIos');
-    } else if ((isChrome) && (mq)) {
+    } else if (isChrome && mq) {
       $body.addClass('isChrome');
     }
   }
@@ -27,13 +27,15 @@ $(document).ready(function(){
     }
   }
   fullHeightBanner();
-
 });
 
-$(document).on('click', 'a[href^="#"]', function (event) {
+$(document).on('click', 'a[href^="#"]', function(event) {
   event.preventDefault();
 
-  $('html, body').animate({
-    scrollTop: $($.attr(this, 'href')).offset().top
-  }, 500);
+  $('html, body').animate(
+    {
+      scrollTop: $($.attr(this, 'href')).offset().top,
+    },
+    500
+  );
 });

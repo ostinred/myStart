@@ -1,3 +1,5 @@
 /.idea
 /node_modules
 /dest
+/yarn.lock
+/package-lock.json
